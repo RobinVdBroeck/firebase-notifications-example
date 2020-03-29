@@ -1,6 +1,7 @@
 import * as firebase from "firebase/app";
 import "firebase/messaging";
 import "firebase/analytics";
+import "firebase/auth";
 
 const config = {
   apiKey: "AIzaSyDXn2UpxOMkK_M760PqFpEh9s1AexMG6BM",
@@ -15,6 +16,7 @@ const config = {
 
 export function setup() {
   firebase.initializeApp(config);
+
   firebase.analytics();
 
   const messaging = firebase.messaging();
