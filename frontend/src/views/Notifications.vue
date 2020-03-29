@@ -9,8 +9,6 @@
 </template>
 
 <script>
-import firebase from "firebase/app";
-
 export default {
   name: "notifications",
   data: () => ({
@@ -19,18 +17,8 @@ export default {
         key: 0,
         message: "dummy data"
       }
-    ],
-    unsubscribe: null
-  }),
-  mounted() {
-    const messaging = firebase.messaging();
-    this.unsubscribe = messaging.onMessage(payload => {
-      console.log("Received message", payload);
-    });
-  },
-  destroyed() {
-    this.unsubscribe?.();
-  }
+    ]
+  })
 };
 </script>
 

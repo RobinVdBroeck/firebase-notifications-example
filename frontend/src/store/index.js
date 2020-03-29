@@ -11,6 +11,10 @@ export default new Vuex.Store({
       data: null,
       jwt: null,
       refreshToken: null
+    },
+    messaging: {
+      pushAllowed: false,
+      token: null
     }
   },
   getters: {
@@ -25,11 +29,17 @@ export default new Vuex.Store({
     SET_USER(state, data) {
       state.user.data = data;
     },
-    SET_JWT(state, data) {
-      state.user.jwt = data;
+    SET_JWT(state, value) {
+      state.user.jwt = value;
     },
-    SET_REFERSH_TOKEN(state, data) {
-      state.refreshToken = data;
+    SET_REFERSH_TOKEN(state, value) {
+      state.refreshToken = value;
+    },
+    SET_ALLOW_PUSH(state, value) {
+      state.messaging.pushAllowed = value;
+    },
+    SET_MESSAGING_TOKEN(state, value) {
+      state.messaging.token = value;
     }
   },
   actions: {
@@ -46,6 +56,12 @@ export default new Vuex.Store({
       } else {
         commit("SET_USER", null);
       }
+    },
+    allowPush({ commit }, value) {
+      commit("SET_ALLOW_PUSH", value);
+    },
+    fetchMessagingToken({ commit }, token) {
+      commit("SET_MESSAGING_TOKEN", token);
     }
   },
   modules: {}

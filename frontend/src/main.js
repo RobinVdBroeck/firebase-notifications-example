@@ -5,10 +5,11 @@ import router from "./router";
 import store from "./store";
 import "./registerServiceWorker";
 
-setupFirebase(router);
-
 Vue.config.productionTip = false;
 new Vue({
+  beforeCreate() {
+    setupFirebase({ router: this.$router, store: this.$store });
+  },
   router,
   store,
   render: h => h(App)

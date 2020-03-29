@@ -2,7 +2,6 @@ import * as firebase from "firebase/app";
 import "firebase/messaging";
 import "firebase/analytics";
 import "firebase/auth";
-import store from "./store";
 
 const config = {
   apiKey: "AIzaSyDXn2UpxOMkK_M760PqFpEh9s1AexMG6BM",
@@ -15,7 +14,10 @@ const config = {
   measurementId: "G-Q5S8D6JF3M"
 };
 
-export function setup(router) {
+/**
+ * @param {*} dependencies Requires a router and a store
+ */
+export async function setup({ router, store }) {
   firebase.initializeApp(config);
   firebase.analytics();
 
@@ -23,9 +25,24 @@ export function setup(router) {
   messaging.usePublicVapidKey(
     "BJW1qMomDpYqoIuGgL3A_nNlXa13umYvocrjCiD0RnRBquNdlisIN8S491cVWGUpsr1TZs-hGTE4vfFQFMQirGM"
   );
+  try {
+    await messaging.requestPermission();
+    store.dispatch("allowPush", true);
+
+    const token = await messaging.getToken();
+    store.dispatch("fetchMessagingToken", token);
+    messaging.onMessage({
+      next: payload => {
+        console.log("Received message", payload);
+      },
+      error: err => console.error("Error", err),
+      complete: () => console.log("completed")
+    });
+  } catch {
+    store.dispatch("allowPush", false);
+  }
 
   firebase.auth().onAuthStateChanged(user => {
-    console.log(router.currentRoute.name, user);
     if (!user) {
       store.dispatch("fetchUser", null);
       if (router.currentRoute.name !== "login") {
