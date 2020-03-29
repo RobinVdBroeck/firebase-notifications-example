@@ -15,12 +15,19 @@
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <router-link class="nav-link" to="login">Login</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link class="nav-link" to="register">Register</router-link>
-        </li>
+        <template v-if="!user.loggedIn">
+          <li class="nav-item">
+            <router-link class="nav-link" to="login">Login</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="register">Register</router-link>
+          </li>
+        </template>
+        <template v-else>
+          <li class="nav-item">
+            <a class="nav-link" @click.prevent="signOut">Sign out</a>
+          </li>
+        </template>
         <li class="nav-item">
           <router-link class="nav-link" to="notifications"
             >Notifcations</router-link
@@ -32,7 +39,21 @@
 </template>
 
 <script>
-export default {};
+import { mapGetters } from "vuex";
+import firebase from "firebase/app";
+
+export default {
+  name: "navbar",
+  computed: {
+    ...mapGetters({ user: "user" })
+  },
+  methods: {
+    async signOut() {
+      await firebase.auth().signOut();
+      this.$router.replace({ name: "login" });
+    }
+  }
+};
 </script>
 
 <style></style>

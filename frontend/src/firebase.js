@@ -2,6 +2,7 @@ import * as firebase from "firebase/app";
 import "firebase/messaging";
 import "firebase/analytics";
 import "firebase/auth";
+import store from "./store";
 
 const config = {
   apiKey: "AIzaSyDXn2UpxOMkK_M760PqFpEh9s1AexMG6BM",
@@ -16,11 +17,14 @@ const config = {
 
 export function setup() {
   firebase.initializeApp(config);
-
   firebase.analytics();
 
   const messaging = firebase.messaging();
   messaging.usePublicVapidKey(
     "BJW1qMomDpYqoIuGgL3A_nNlXa13umYvocrjCiD0RnRBquNdlisIN8S491cVWGUpsr1TZs-hGTE4vfFQFMQirGM"
   );
+
+  firebase.auth().onAuthStateChanged(user => {
+    store.dispatch("fetchUser", user);
+  });
 }
