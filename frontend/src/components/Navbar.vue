@@ -27,12 +27,12 @@
           <li class="nav-item">
             <a class="nav-link" @click.prevent="signOut">Sign out</a>
           </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="notifications"
+              >Notifcations</router-link
+            >
+          </li>
         </template>
-        <li class="nav-item">
-          <router-link class="nav-link" to="notifications"
-            >Notifcations</router-link
-          >
-        </li>
       </ul>
     </div>
   </nav>

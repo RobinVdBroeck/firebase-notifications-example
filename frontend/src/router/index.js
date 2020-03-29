@@ -1,7 +1,18 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "../store";
 
 Vue.use(VueRouter);
+
+function requireAuth(to, from, next) {
+  const user = store.getters.user;
+
+  if (user.loggedIn) {
+    next();
+  } else {
+    next("/login");
+  }
+}
 
 const routes = [
   {
@@ -10,19 +21,20 @@ const routes = [
   },
   {
     path: "/login",
-    name: "Login",
+    name: "login",
     component: () =>
       import(/* webpackChunkName: "login" */ "../views/Login.vue")
   },
   {
     path: "/register",
-    name: "Register",
+    name: "register",
     component: () =>
       import(/* webpackChunkName: "register" */ "../views/Register.vue")
   },
   {
     path: "/notifications",
     name: "notifications",
+    beforeEnter: requireAuth,
     component: () =>
       import(
         /* webpackChunkName: "notifications" */ "../views/Notifications.vue"
