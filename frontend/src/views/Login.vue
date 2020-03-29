@@ -72,12 +72,13 @@ export default {
   }),
   methods: {
     async submit() {
-      this.error = null;
+      if (this.error) {
+        this.error = null;
+      }
 
       const { email, password } = this.form;
       try {
         await firebase.auth().signInWithEmailAndPassword(email, password);
-        this.$router.replace({ name: "notifications" });
       } catch (err) {
         this.error = err.message;
       }

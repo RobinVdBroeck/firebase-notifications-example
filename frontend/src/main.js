@@ -3,8 +3,9 @@ import App from "./App.vue";
 import { setup as setupFirebase } from "./firebase";
 import router from "./router";
 import store from "./store";
+import "./registerServiceWorker";
 
-setupFirebase();
+setupFirebase(router);
 
 Vue.config.productionTip = false;
 new Vue({

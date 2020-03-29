@@ -15,7 +15,7 @@ const config = {
   measurementId: "G-Q5S8D6JF3M"
 };
 
-export function setup() {
+export function setup(router) {
   firebase.initializeApp(config);
   firebase.analytics();
 
@@ -25,6 +25,17 @@ export function setup() {
   );
 
   firebase.auth().onAuthStateChanged(user => {
-    store.dispatch("fetchUser", user);
+    console.log(router.currentRoute.name, user);
+    if (!user) {
+      store.dispatch("fetchUser", null);
+      if (router.currentRoute.name !== "login") {
+        router.replace({ name: "login" });
+      }
+    } else {
+      store.dispatch("fetchUser", user);
+      if (router.currentRoute.name !== "notifications") {
+        router.replace({ name: "notifications" });
+      }
+    }
   });
 }
