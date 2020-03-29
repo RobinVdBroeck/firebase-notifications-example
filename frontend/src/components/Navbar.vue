@@ -49,8 +49,12 @@ export default {
   },
   methods: {
     async signOut() {
-      await firebase.auth().signOut();
-      this.$router.replace({ name: "login" });
+      try {
+        await firebase.auth().signOut();
+        this.$router.replace({ name: "login" });
+      } catch (err) {
+        console.error("Could not sign out", err.message);
+      }
     }
   }
 };

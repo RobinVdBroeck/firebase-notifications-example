@@ -72,9 +72,7 @@ export default {
   }),
   methods: {
     async submit() {
-      if (this.error) {
-        this.error = null;
-      }
+      this.error = null;
 
       const { email, password } = this.form;
       try {
